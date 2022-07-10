@@ -4,19 +4,33 @@ const { CryptoBlock, Blockchain } = require('../models/Blockchain')
 
 const bc = new Blockchain()
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  bc.addNewBlock(new CryptoBlock(1, "01/06/2020", {
-    sender: "Iris Ljesnjanin",
-    recipient: "Cosima Mielke",
-    quantity: 50
-  }))
-  bc.addNewBlock(new CryptoBlock(2, "01/07/2020", {
-    sender: "Vitaly Friedman",
-    recipient: "Ricardo Gimenes",
-    quantity: 100
-  }))
+router.get('/mine-block', function(req, res, next) {
+  const block = new CryptoBlock(
+    bc.blockchain.length,
+    new Date().toLocaleDateString(),
+    {
+      title: "Option negative",
+      count: 45
+    }
+  )
+  bc.addNewBlock(block)
   res.status(200).json({
-    chain: bc
+    message: 'Block was added',
+    data: block
+  })
+});
+
+router.get('/chain', function(req, res, next) {
+  res.status(200).json({
+    message: 'Success',
+    data: bc.blockchain
+  })
+});
+
+router.get('/is-chain-valid', function(req, res, next) {
+  res.status(200).json({
+    message: 'Success',
+    data: bc.checkChainValidity()
   })
 });
 
