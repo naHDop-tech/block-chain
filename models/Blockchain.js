@@ -1,13 +1,13 @@
 const SHA256 = require("crypto-js/sha256");
 
 class CryptoBlock {
-  constructor(index, timestamp, data, precedingHash=" "){
-   this.index = index;
-   this.timestamp = timestamp;
-   this.data = data;
-   this.precedingHash = precedingHash;
-   this.hash = this.computeHash();
-   this.nonce = 0;
+  constructor(index, timestamp, data, precedingHash = " ") {
+    this.index = index;
+    this.timestamp = timestamp;
+    this.data = data;
+    this.precedingHash = precedingHash;
+    this.hash = this.computeHash();
+    this.nonce = 0;
   }
 
   computeHash() {
@@ -22,6 +22,7 @@ class CryptoBlock {
 
   proofOfWork(difficulty) {
     while (
+      // first 4 chars !== '0000'
       this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")
     ) {
       this.nonce++;
@@ -31,13 +32,18 @@ class CryptoBlock {
 }
 
 class Blockchain {
-  constructor(){
-    this.blockchain = [this.startGenesisBlock()]
+  constructor() {
+    this.blockchain = [this.startGenesisBlock()];
     this.difficulty = 4;
   }
 
   startGenesisBlock() {
-      return new CryptoBlock(0, new Date().toLocaleDateString(), "Initial Block in the Chain", "0");
+    return new CryptoBlock(
+      0,
+      new Date().toLocaleDateString(),
+      "Initial Block in the Chain",
+      "0"
+    );
   }
 
   obtainLatestBlock() {
@@ -65,5 +71,5 @@ class Blockchain {
   }
 }
 
-exports.Blockchain = Blockchain
-exports.CryptoBlock = CryptoBlock
+exports.Blockchain = Blockchain;
+exports.CryptoBlock = CryptoBlock;
